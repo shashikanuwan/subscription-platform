@@ -1,7 +1,16 @@
 <?php
 
-it('returns a successful response', function () {
-    $response = $this->get('/');
+use App\Models\Website;
 
-    $response->assertStatus(200);
+use function Pest\Laravel\post;
+
+it('can create post', function () {
+    $website = Website::factory()->create();
+
+  post('/test', [
+        'title' => 'fefe',
+        'description' => 'fefef',
+        'website_id' => 2,
+    ]);
+
 });
