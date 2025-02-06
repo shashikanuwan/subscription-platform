@@ -2,20 +2,21 @@
 
 namespace App\Models;
 
-use Database\Factories\PostFactory;
+use Database\Factories\SubscriptionFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Notifications\Notifiable;
 
 /**
- * @property string $title
- * @property string $description
- * @property int $website_id
+ * @property string $email
  */
-class Post extends Model
+class Subscription extends Model
 {
-    /** @use HasFactory<PostFactory> */
+    /** @use HasFactory<SubscriptionFactory> */
     use HasFactory;
+
+    use Notifiable;
 
     public function website(): BelongsTo
     {
