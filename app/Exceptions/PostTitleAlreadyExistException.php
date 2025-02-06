@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class PostTitleAlreadyExistException extends Exception
 {
@@ -11,7 +12,7 @@ class PostTitleAlreadyExistException extends Exception
     {
         return response()->json(
             ['message' => 'The post title already exists in our database'],
-            422
+            Response::HTTP_UNPROCESSABLE_ENTITY
         );
     }
 }
