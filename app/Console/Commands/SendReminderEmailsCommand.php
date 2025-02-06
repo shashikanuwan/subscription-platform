@@ -2,22 +2,22 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\DailyReminder;
 use App\Models\Subscription;
-use App\Notifications\ReminderNotification;
 use Illuminate\Console\Command;
 
-class SendEmailsCommand extends Command
+class SendReminderEmailsCommand extends Command
 {
     protected $signature = 'app:send-emails';
 
-    protected $description = 'Send reminder';
+    protected $description = 'Send daily reminder mail';
 
     public function handle(): void
     {
         $subscribers = Subscription::query()->get();
 
         foreach ($subscribers as $subscriber) {
-            $subscriber->notify(new ReminderNotification);
+            DailyReminder::dispatch($subscriber);
         }
     }
 }
