@@ -3,23 +3,23 @@
 namespace App\Listeners;
 
 use App\Events\PostPublished;
-use App\Models\Subscription;
 use App\Notifications\PostPublishedNotification;
+use App\Repositories\SubscriptionRepository;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Notification;
 
 class SendPostEmailNotification implements ShouldQueue
 {
-    public function __construct() {}
+    use Queueable;
+
+    public function __construct(protected SubscriptionRepository $subscriptionRepository) {}
 
     public function handle(PostPublished $event): void
     {
         $post = $event->post;
+        $subscribers = $this->subscriptionRepository->getByWebsiteId($post->website_id);
 
-        $subscribers = Subscription::query()
-            ->where('website_id', $post->website_id);
-
-        foreach ($subscribers as $subscriber) {
-            $subscriber->notify(new PostPublishedNotification($post));
-        }
+        Notification::send($subscribers, new PostPublishedNotification($post));
     }
 }
