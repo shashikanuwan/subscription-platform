@@ -13,4 +13,12 @@ class SubscriptionRepository
             ->where('website_id', $websiteId)
             ->get();
     }
+
+    public function isEmailSubscribed(string $email, int $websiteId): bool
+    {
+        return Subscription::query()
+            ->where('email', $email)
+            ->where('website_id', $websiteId)
+            ->exists();
+    }
 }

@@ -5,9 +5,12 @@ namespace App\Actions\Subscription;
 use App\Exceptions\SubscriptionAlreadyExistsException;
 use App\Models\Subscription;
 use App\Models\Website;
+use App\Repositories\SubscriptionRepository;
 
 class CreateSubscription
 {
+    public function __construct(protected SubscriptionRepository $subscriptionRepository) {}
+
     /**
      * @throws SubscriptionAlreadyExistsException
      */
@@ -37,9 +40,6 @@ class CreateSubscription
 
     private function isEmailAlreadySubscribedToWebsite(string $email, Website $website): bool
     {
-        return Subscription::query()
-            ->where('email', $email)
-            ->where('website_id', $website->id)
-            ->exists();
+        return $this->subscriptionRepository->isEmailSubscribed($email, $website->id);
     }
 }
