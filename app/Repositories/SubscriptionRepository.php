@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Collection;
 
 class SubscriptionRepository
 {
+    public function all(): Collection
+    {
+        return Subscription::query()
+            ->get();
+    }
+
     public function getByWebsiteId(int $websiteId): Collection
     {
         return Subscription::query()
